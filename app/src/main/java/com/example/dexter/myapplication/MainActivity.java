@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         super.onStop();
         Log.d(TAG, "onStop.....");
         mGoogleApiClient.disconnect();
+        //egeg
         Log.d(TAG, "onConnected - isConnected .: " + mGoogleApiClient.isConnected());
     }
 
