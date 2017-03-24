@@ -3,11 +3,15 @@ package com.example.dexter.myapplication;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 
+import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +30,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.ConnectionResult;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity implements LocationListener, ConnectionCallbacks, OnConnectionFailedListener {
 
     protected GoogleApiClient mGoogleApiClient;
@@ -40,7 +47,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     LocationRequest mLocationRequest;
     TextView latitude;
     TextView longitude;
+    TextView timeLocation;
     Button showLocation;
+    String mLastUpdateTime;
 
 
     @Override
@@ -51,12 +60,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         Log.d(TAG, "onCreate ....");
         //show error dialog if GooglePlayServices not available
         if (!isGooglePlayServicesAvailable()) {
-            finish();
+            Toast.makeText(this, "Google Play Services Not Available", Toast.LENGTH_SHORT).show();
         }
+
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
         latitude = (TextView) findViewById(R.id.Latitude);
         longitude = (TextView) findViewById(R.id.Longitude);
         showLocation = (Button) findViewById(R.id.locationButton);
+        timeLocation = (TextView) findViewById(R.id.timeTextView);
+
 
         createLocationRequest();
         buildGoogleApiClient();
@@ -64,6 +77,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         showLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //check if GPS is enabled
+                if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                    buildAlertMessageNoGps();
+                }
                 updateUI();
             }
         });
@@ -80,6 +97,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         }
     }
 
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -93,9 +127,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         if (null != mCurrentLocation) {
             latitude.setText(String.valueOf(mCurrentLocation.getLatitude()));
             longitude.setText(String.valueOf(mCurrentLocation.getLongitude()));
+            timeLocation.setText(mLastUpdateTime);
+            Toast.makeText(this, "Location Updated", Toast.LENGTH_SHORT).show();
 
         } else {
             Log.d(TAG, "location is null .........");
+            Toast.makeText(this, "Location is NULL", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -103,14 +140,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     public void onLocationChanged(Location location) { //called when location has changed
         Log.d(TAG, "onLocationChanged...");
         mCurrentLocation = location;
-        updateUI();
+        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+       // updateUI();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart....");
-        mGoogleApiClient.connect();
+                   mGoogleApiClient.connect();
     }
 
     private boolean isGooglePlayServicesAvailable() {
@@ -141,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         super.onStop();
         Log.d(TAG, "onStop.....");
         mGoogleApiClient.disconnect();
-        //egeg
+
         Log.d(TAG, "onConnected - isConnected .: " + mGoogleApiClient.isConnected());
     }
 
@@ -165,10 +203,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         Log.d(TAG, "Location update stopped ....");
     }
 
-
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case REQUEST_LOCATION_CODE_ASK_PERMISSION: {
                 // If request is cancelled, the result arrays are empty.
@@ -177,11 +213,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
                     // permission was granted, yay! Do the
                     // location-related task you need to do.
+                    Toast.makeText(this, "Permission Accepted", Toast.LENGTH_SHORT).show();
 
                 } else {
 
-                    // permission denied, boo! Disable the
-                    Toast.makeText(this, "LOCATION DENIED", Toast.LENGTH_SHORT).show();
+                    // permission denied
+                    Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -190,7 +227,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             // permissions this app might request
         }
     }
-
 
     @Override
     protected void onPause() {

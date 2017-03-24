@@ -1,58 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.dexter.myapplication.MainActivity">
 
-    <TextView
-        android:id="@+id/Longitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.177"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.597" />
-
-    <TextView
-        android:id="@+id/Latitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="57dp"
-        tools:layout_editor_absoluteY="214dp" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteY="98dp"
-        tools:layout_editor_absoluteX="129dp" />
 
     <Button
         android:id="@+id/locationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="81dp" />
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="87dp"
+        android:text="SHOW MY LOCATION"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/Latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/locationButton"
+        android:layout_below="@+id/locationButton"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="78dp" />
+
+    <TextView
+        android:id="@+id/Longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/Latitude"
+        android:layout_below="@+id/Latitude"
+        android:layout_marginTop="65dp" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/Longitude"
+        android:layout_below="@+id/Longitude"
+        android:layout_marginTop="57dp" />
+
+    <TextView
+        android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Latitude"
-        tools:layout_editor_absoluteX="57dp"
-        tools:layout_editor_absoluteY="182dp" />
+        android:layout_alignBaseline="@+id/Latitude"
+        android:layout_alignBottom="@+id/Latitude"
+        android:layout_alignStart="@+id/locationButton"
+        android:layout_marginStart="39dp" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Longitude"
-        tools:layout_editor_absoluteX="61dp"
-        tools:layout_editor_absoluteY="267dp" />
+        android:layout_above="@+id/timeTextView"
+        android:layout_alignEnd="@+id/textView11"
+        android:text="Longitude" />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/timeTextView"
+        android:layout_alignEnd="@+id/textView12"
+        android:text="Time of Access" />
+</RelativeLayout>
