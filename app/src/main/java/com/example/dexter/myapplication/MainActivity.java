@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 
@@ -29,6 +30,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.maps.MapsInitializer;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     TextView longitude;
     TextView timeLocation;
     Button showLocation;
+    Button showMap;
     String mLastUpdateTime;
 
 
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+      //  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //set activity to portrait mode
 
         Log.d(TAG, "onCreate ....");
         //show error dialog if GooglePlayServices not available
@@ -69,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         longitude = (TextView) findViewById(R.id.Longitude);
         showLocation = (Button) findViewById(R.id.locationButton);
         timeLocation = (TextView) findViewById(R.id.timeTextView);
+
+        showMap =(Button) findViewById(R.id.mapButton);
 
 
         createLocationRequest();
@@ -84,6 +91,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 updateUI();
             }
         });
+    }
+
+
+    public void goToMapView(View v){
+        Intent intent= new Intent(this, MapsActivity.class);
+                startActivity(intent);
+
     }
 
     protected void buildGoogleApiClient() {
