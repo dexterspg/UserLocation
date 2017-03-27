@@ -7,15 +7,24 @@
     tools:context="com.example.dexter.myapplication.MainActivity">
 
 
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Longitude"
+        android:layout_margin="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/mapButton" />
+
     <Button
         android:id="@+id/locationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="101dp"
         android:layout_marginTop="138dp"
-        android:text="SHOW MY LOCATION"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:text="SHOW MY LOCATION" />
 
     <TextView
         android:id="@+id/Latitude"
@@ -32,31 +41,24 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/Latitude"
         android:layout_below="@+id/Latitude"
-        android:layout_marginTop="65dp" />
-
-    <TextView
-        android:id="@+id/timeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/Longitude"
-        android:layout_below="@+id/Longitude"
-        android:layout_marginTop="57dp" />
+        android:layout_marginTop="30dp" />
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Latitude"
         android:layout_alignBaseline="@+id/Latitude"
         android:layout_alignBottom="@+id/Latitude"
-        android:layout_alignStart="@+id/locationButton"
-        android:layout_marginStart="39dp" />
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="69dp"
+        android:text="Latitude" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/timeTextView"
+        android:layout_alignBaseline="@+id/Longitude"
+        android:layout_alignBottom="@+id/Longitude"
         android:layout_alignEnd="@+id/textView11"
         android:text="Longitude" />
 
@@ -64,17 +66,19 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Time of Access"
+        android:layout_marginStart="37dp"
+        android:layout_alignBaseline="@+id/timeTextView"
         android:layout_alignBottom="@+id/timeTextView"
-        android:layout_alignEnd="@+id/textView12"
-        android:text="Time of Access" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/mapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/textView11"
-        android:layout_marginTop="39dp"
+        android:layout_marginTop="43dp"
+        android:layout_toEndOf="@+id/textView11"
         android:onClick="goToMapView"
         android:text="View Map" />
 </RelativeLayout>

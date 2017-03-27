@@ -78,8 +78,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         showMap =(Button) findViewById(R.id.mapButton);
 
 
-        createLocationRequest();
-        buildGoogleApiClient();
+        createConnectionRequest();
 
         showLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,18 +86,35 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 //check if GPS is enabled
                 if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
                     buildAlertMessageNoGps();
-                }
+                                    }
                 updateUI();
             }
         });
     }
 
+    public void createConnectionRequest(){
+
+
+        createLocationRequest();
+        buildGoogleApiClient();
+
+    }
+
+
+
 
     public void goToMapView(View v){
         Intent intent= new Intent(this, MapsActivity.class);
-                startActivity(intent);
+        Bundle extras=new Bundle();
+        extras.putString("latitudeData",String.valueOf(mCurrentLocation.getLatitude()));
+        extras.putString("longitudeData",String.valueOf(mCurrentLocation.getLongitude()));
+        intent.putExtras(extras);
+        startActivity(intent);
 
     }
+
+
+
 
     protected void buildGoogleApiClient() {
         // Create an instance of GoogleAPIClient.
